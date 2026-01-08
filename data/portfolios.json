@@ -1,0 +1,32 @@
+[
+  {
+    "user_id": 1,
+    "wallets": {
+      "USD": {
+        "currency_code": "USD",
+        "balance": 1000.0,
+        "last_updated": "2026-01-08T18:37:45.688823"
+      }
+    }
+  },
+  {
+    "user_id": 2,
+    "wallets": {
+      "USD": {
+        "currency_code": "USD",
+        "balance": 500.0,
+        "last_updated": "2026-01-08T18:37:45.688823"
+      }
+    }
+  },
+  {
+    "user_id": 3,
+    "wallets": {
+      "USD": {
+        "currency_code": "USD",
+        "balance": 2000.0,
+        "last_updated": "2026-01-08T18:37:55.223788"
+      }
+    }
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "transaction_id": 1,
+    "user_id": 1,
+    "type": "deposit",
+    "from_currency": null,
+    "to_currency": "USD",
+    "amount": 1000.0,
+    "rate": null,
+    "timestamp": "2026-01-08T18:15:35.404962"
+  },
+  {
+    "transaction_id": 2,
+    "user_id": 2,
+    "type": "deposit",
+    "from_currency": null,
+    "to_currency": "USD",
+    "amount": 500.0,
+    "rate": null,
+    "timestamp": "2026-01-08T18:16:30.991045"
+  },
+  {
+    "transaction_id": 3,
+    "user_id": 3,
+    "type": "deposit",
+    "from_currency": null,
+    "to_currency": "USD",
+    "amount": 1000.0,
+    "rate": null,
+    "timestamp": "2026-01-08T18:37:45.703946"
+  },
+  {
+    "transaction_id": 4,
+    "user_id": 3,
+    "type": "deposit",
+    "from_currency": null,
+    "to_currency": "USD",
+    "amount": 1000.0,
+    "rate": null,
+    "timestamp": "2026-01-08T18:37:55.225924"
+  }
+]

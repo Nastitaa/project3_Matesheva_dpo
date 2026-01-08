@@ -1,19 +1,47 @@
 [tool.poetry]
-name = "project3-matesheva"
-version = "0.1.0"
-description = ""
+name = "project3-matesheva-dpo"
+version = "1.0.0"
+description = "ValutaTrade Hub - Платформа для симуляции торговли валютами"
 authors = ["Nastitaa <Nastitaa@github.com>"]
 readme = "README.md"
+license = "MIT"
+keywords = ["trading", "crypto", "currency", "portfolio", "cli"]
+homepage = "https://github.com/Nastitaa/valutatrade-hub"
+repository = "https://github.com/Nastitaa/valutatrade-hub"
+package-mode = false
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Russian",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Education",
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"
+prettytable = "^3.10.0"
+pyyaml = "^6.0"
+colorama = "^0.4.6"
+requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.0"
-pytest = "^7.0.0"
+pytest = "^8.0.0"
+pytest-cov = "^5.0.0"
+black = "^24.0.0"
+mypy = "^1.8.0"
+bandit = "^1.7.7"
+pre-commit = "^3.6.0"
+faker = "^24.3.0"
 
 [tool.poetry.scripts]
 valutatrade = "main:main"
+valutatrade-cli = "valutatrade_hub.cli.interface:main"
+valutatrade-parser = "parser_runner:main"
 
 [build-system]
 requires = ["poetry-core"]
@@ -21,8 +49,211 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 100
-select = ["E", "F", "I", "B"]
+select = ["E", "F", "I", "B", "C", "N", "W", "Q", "UP", "S", "T", "RUF"]
 ignore = []
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+    "S",  # flake8-bandit
+    "T10", # flake8-debugger
+    "RUF", # ruff-specific rules
+]
+ignore = [
+    "B008",  # не допускать вызовов функций с аргументами по умолчанию, которые вычисляются во время выполнения
+    "B905",  # zip без strict=True
+    "C901",  # слишком сложная функция
+    "S101",  # использование assert
+    "S108",  # общие пути к файлам в открытых вызовах
+    "T201",  # print обнаружен
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+indent-width = 4
+target-version = "py312"
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]
+"tests/*.py" = ["C0114", "C0115", "C0116", "S101", "S106"]
+
+[tool.black]
+line-length = 100
+target-version = ['py312']
+skip-string-normalization = true
+extend-exclude = '''
+/(
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+)/
+'''
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --cov=valutatrade_hub --cov-report=term-missing --cov-report=html"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "unit: unit tests",
+    "integration: integration tests",
+    "slow: slow tests",
+]
+
+[tool.coverage.run]
+source = ["valutatrade_hub"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/__pycache__/*",
+    "*/admin.py",
+    "*/setup.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\bProtocol\b:",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "docs", "migrations"]
+skips = ["B101", "B404", "B603", "B607"]
+
+# Конфигурация ValutaTrade Hub
+[tool.valutatrade]
+# Общие настройки приложения
+name = "ValutaTrade Hub"
+version = "1.0.0"
+debug = false
+
+# Пути к данным
+data_dir = "data"
+logs_dir = "logs"
+users_file = "data/users.json"
+portfolios_file = "data/portfolios.json"
+rates_file = "data/rates.json"
+transactions_file = "data/transactions.json"
+currencies_file = "data/currencies.json"
+exchange_rates_file = "data/exchange_rates.json"
+
+# Настройки курсов валют
+rates_ttl_seconds = 300
+default_base_currency = "USD"
+update_on_start = true
+max_retries = 3
+retry_delay = 1
+
+# Настройки торговли
+min_trade_amount = 0.00000001
+default_fee_percent = 0.1
+enable_margin_trading = false
+max_leverage = 1.0
+
+# Настройки логирования
+log_level = "INFO"
+log_format = "text"  # text или json
+log_file = "logs/valutatrade.log"
+max_size_mb = 10
+backup_count = 5
+enable_console = true
+enable_file = true
+
+# Настройки безопасности
+password_min_length = 4
+session_timeout_minutes = 30
+max_login_attempts = 5
+enable_2fa = false
+
+# Настройки API
+exchange_rates_api = "https://v6.exchangerate-api.com/v6"
+crypto_api = "https://api.coingecko.com/api/v3"
+timeout_seconds = 10
+enable_caching = true
+cache_ttl_minutes = 5
+
+# Поддерживаемые валюты
+supported_currencies = ["USD", "EUR", "GBP", "JPY", "RUB", "CNY", "CHF", "CAD", "AUD", "BTC", "ETH", "BNB", "XRP", "ADA", "SOL", "DOT"]
+
+# Поддерживаемые фиатные валюты
+supported_fiat = ["USD", "EUR", "GBP", "JPY", "RUB", "CNY", "CHF", "CAD", "AUD"]
+
+# Поддерживаемые криптовалюты
+supported_crypto = ["BTC", "ETH", "BNB", "XRP", "ADA", "SOL", "DOT"]
+
+# Настройки дефолтных кошельков
+default_wallets = ["USD"]
+
+# Сообщения подтверждения
+confirm_messages_buy = "Вы уверены, что хотите совершить покупку?"
+confirm_messages_sell = "Вы уверены, что хотите совершить продажу?"
+confirm_messages_delete = "Вы уверены, что хотите удалить?"
+confirm_messages_logout = "Вы уверены, что хотите выйти из системы?"
+
+# Лимиты и ограничения
+max_deposit_per_day = 1000000.0
+max_withdraw_per_day = 100000.0
+max_trade_amount = 10000.0
+min_portfolio_value = 10.0
+
+# Функции администрирования
+user_management = true
+currency_management = true
+rate_management = true
+backup_restore = true
+system_logs = true
+
+# Конфигурация точности валют (используется YAML синтаксис в строке)
+currency_precision = "USD: 2, EUR: 2, GBP: 2, JPY: 0, RUB: 2, CNY: 2, CHF: 2, CAD: 2, AUD: 2, BTC: 8, ETH: 8, BNB: 8, XRP: 6, ADA: 6, SOL: 6, DOT: 6"
+
+# Конфигурация стран эмитентов для фиатных валют (используется YAML синтаксис в строке)
+fiat_issuing_countries = "USD: United States, EUR: Eurozone, GBP: United Kingdom, JPY: Japan, RUB: Russia, CNY: China, CHF: Switzerland, CAD: Canada, AUD: Australia"
+
+# Конфигурация алгоритмов для криптовалют (используется YAML синтаксис в строке)
+crypto_algorithms = "BTC: SHA-256, ETH: Ethash, BNB: BEP-20, XRP: XRP Ledger, ADA: Ouroboros, SOL: Proof of History, DOT: Nominated Proof-of-Stake"
+
+# Начальные курсы (используется YAML синтаксис в строке)
+initial_rates = "EUR_USD: 1.0786, BTC_USD: 59337.21, ETH_USD: 3720.00, GBP_USD: 1.2634, JPY_USD: 0.0068, RUB_USD: 0.01016, CNY_USD: 0.1385, CHF_USD: 1.1050, CAD_USD: 0.7350, AUD_USD: 0.6550, BNB_USD: 580.0, XRP_USD: 0.52, ADA_USD: 0.38, SOL_USD: 110.50, DOT_USD: 6.80"
+
+# Цветовая схема CLI (используется YAML синтаксис в строке)
+cli_colors = "success: green, error: red, warning: yellow, info: blue, highlight: cyan, prompt: magenta"

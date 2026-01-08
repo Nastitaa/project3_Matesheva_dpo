@@ -1,15 +1,27 @@
-# main.py
 #!/usr/bin/env python3
 """
 ValutaTrade Hub - Платформа для симуляции торговли валютами
 """
 
 import sys
+
 from valutatrade_hub.cli.interface import main as cli_main
+from valutatrade_hub.logging_config import setup_logging
+from valutatrade_hub.infra.settings import settings
 
 
 def main():
     """Основная функция приложения"""
+    # Инициализируем логирование
+    setup_logging(
+        log_level=settings.log_level,
+        log_dir=settings.log_dir
+    )
+
+    print("=" * 50)
+    print("ValutaTrade Hub - Торговая платформа")
+    print("=" * 50)
+
     try:
         cli_main()
     except KeyboardInterrupt:
