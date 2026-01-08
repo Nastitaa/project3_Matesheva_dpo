@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "project3-matesheva"
+version = "0.1.0"
+description = ""
+authors = ["Nastitaa <Nastitaa@github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.0"
+pytest = "^7.0.0"
+
+[tool.poetry.scripts]
+valutatrade = "main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "B"]
+ignore = []
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
